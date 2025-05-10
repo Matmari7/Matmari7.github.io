@@ -215,20 +215,24 @@
   </div>
 
   <!-- Música -->
-  <button onclick="tocarMusica()">Tocar Música</button>
+  <audio id="musica" loop>
+  <source src="Justin-Timberlake-Mirrors.mp3" type="audio/mpeg">
+  Seu navegador não suporta áudio.
+</audio>
 
+<button onclick="tocarMusica()">Tocar Música</button>
 
 <script>
   function tocarMusica() {
     const musica = document.getElementById('musica');
     musica.play().then(() => {
-      console.log('Música reproduzida com sucesso!');
-    }).catch((e) => {
-      alert('Não foi possível tocar a música. Verifique se o navegador permite ou se o arquivo está no lugar certo.');
-      console.error(e);
+      console.log("Tocando");
+    }).catch((erro) => {
+      console.error("Erro ao tocar áudio:", erro);
+      alert("Não foi possível tocar a música. Verifique se o arquivo está no lugar certo e se o navegador permite.");
     });
   }
-
+  
   // Contador
   const dataInicio = new Date("2025-03-03T00:00:00");
   const contador = document.getElementById("contador");
