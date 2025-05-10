@@ -206,11 +206,11 @@
   <!-- Fotos flutuando dinamicamente -->
   <div class="fotos-dinamicas">
     <img src="marii.jpg" class="foto-solta" style="left: 5%; animation-delay: 0s;">
-    <img src="mariipraia.jpg" class="foto-solta" style="left: 20%; animation-delay: 3s;">
-    <img src="primeiroencontro.jpg" class="foto-solta" style="left: 10%; animation-delay: 5s;">
-    <img src="voltaitalia.jpg" class="foto-solta" style="left: 30%; animation-delay: 7s;">
-    <img src="papa.jpg" class="foto-solta" style="left: 50%; animation-delay: 5s;">
-    <img src="botanico.jpg" class="foto-solta" style="left: 70%; animation-delay: 3s;">
+    <img src="mariipraia.jpg" class="foto-solta" style="left: 20%; animation-delay: 0s;">
+    <img src="primeiroencontro.jpg" class="foto-solta" style="left: 10%; animation-delay: 0s;">
+    <img src="voltaitalia.jpg" class="foto-solta" style="left: 30%; animation-delay: 0s;">
+    <img src="papa.jpg" class="foto-solta" style="left: 50%; animation-delay: 0s;">
+    <img src="botanico.jpg" class="foto-solta" style="left: 70%; animation-delay: 0s;">
     <img src="primeirabalada.jpg" class="foto-solta" style="left:90%; animation-delay: 0s;">
   </div>
 
@@ -225,6 +225,7 @@
 <script>
   function tocarMusica() {
     const musica = document.getElementById('musica');
+    musica.currentTime = 318;
     musica.play().then(() => {
       console.log("Tocando");
     }).catch((erro) => {
