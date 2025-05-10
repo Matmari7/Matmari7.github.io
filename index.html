@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Momentos Juntos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f8ff;
+      padding: 50px;
+    }
+    h1 {
+      color: #333;
+    }
+    #contador {
+      font-size: 2em;
+      margin-top: 20px;
+      color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <h1>Estamos juntos há:</h1>
+  <div id="contador"></div>
+
+  <script>
+    const dataInicial = new Date('2022-05-10'); // Altere para sua data
+    function atualizarContador() {
+      const agora = new Date();
+      const diferenca = agora - dataInicial;
+      const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+      document.getElementById('contador').textContent = `${dias} dias`;
+    }
+    atualizarContador();
+    setInterval(atualizarContador, 86400000);
+  </script>
+</body>
+</html>
+
+Adicionado a página inicial
