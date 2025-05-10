@@ -6,18 +6,74 @@
   <title>Momentos Juntos</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f0f8ff;
-      padding: 50px;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #ffe6f0, #ffffff);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
+
     h1 {
-      color: #333;
+      color: #d63384;
+      font-size: 2.5em;
+      animation: fadeIn 2s ease-in-out;
     }
+
     #contador {
       font-size: 2em;
-      margin-top: 20px;
-      color: #4CAF50;
+      color: #6f42c1;
+      margin-top: 15px;
+      animation: fadeIn 3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 10s infinite;
+      opacity: 0.7;
+    }
+
+    .heart::before, .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        bottom: -50px;
+        transform: translateX(0) rotate(45deg);
+      }
+      100% {
+        bottom: 100vh;
+        transform: translateX(50px) rotate(45deg);
+      }
     }
   </style>
 </head>
@@ -26,7 +82,7 @@
   <div id="contador"></div>
 
   <script>
-    const dataInicial = new Date('2025-03-03'); // Altere para sua data
+    const dataInicial = new Date('2025-03-03'); // Altere para a sua data
     function atualizarContador() {
       const agora = new Date();
       const diferenca = agora - dataInicial;
@@ -34,9 +90,16 @@
       document.getElementById('contador').textContent = `${dias} dias`;
     }
     atualizarContador();
-    setInterval(atualizarContador, 86400000);
+
+    // Criar corações flutuantes
+    for (let i = 0; i < 30; i++) {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 5 + Math.random() * 5 + 's';
+      heart.style.opacity = Math.random();
+      document.body.appendChild(heart);
+    }
   </script>
 </body>
 </html>
-
-Adicionado a página inicial
