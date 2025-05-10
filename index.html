@@ -22,7 +22,7 @@
 
     h1 {
       font-size: 3.5em;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-shadow: 2px 2px 12px #000;
       animation: pulse 3s infinite;
       z-index: 2;
@@ -91,6 +91,7 @@
       height: 100%;
       pointer-events: none;
       overflow: hidden;
+      z-index: 0;
     }
 
     .heart {
@@ -114,6 +115,42 @@
       }
     }
 
+    .fotos-dinamicas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .foto-solta {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      object-fit: cover;
+      animation: flutuarFotos 14s linear infinite;
+      opacity: 0.85;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes flutuarFotos {
+      0% {
+        transform: translateY(100vh) scale(0.8) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
     audio {
       display: none;
     }
@@ -134,18 +171,18 @@
 </head>
 <body>
   <h1>Eu te amo muito 💞</h1>
-  <h1>  Meu BB 💞</h1>
+  <h1>Meu BB 💞</h1>
 
   <!-- Galeria de fotos -->
   <div class="galeria">
     <img src="marii.jpg" class="ativa" alt="Foto 1">
-    <!-- img src="foto2.jpg" alt="Foto 2" -->
-    <!-- img src="foto3.jpg" alt="Foto 3" -->
-    <!-- Adicione mais fotos futuras aqui -->
+    <!-- <img src="foto2.jpg" alt="Foto 2"> -->
+    <!-- <img src="foto3.jpg" alt="Foto 3"> -->
   </div>
 
   <div id="contador"></div>
 
+  <!-- Corações flutuando -->
   <div class="hearts">
     <div class="heart" style="left: 10%; animation-delay: 0s;"></div>
     <div class="heart" style="left: 30%; animation-delay: 2s;"></div>
@@ -154,6 +191,15 @@
     <div class="heart" style="left: 90%; animation-delay: 3s;"></div>
   </div>
 
+  <!-- Fotos flutuando dinamicamente -->
+  <div class="fotos-dinamicas">
+    <!--img src="marii.jpg" class="foto-solta" style="left: 5%; animation-delay: 0s;" -->
+    <!--img src="foto2.jpg" class="foto-solta" style="left: 25%; animation-delay: 3s;" -->
+    <!--img src="foto3.jpg" class="foto-solta" style="left: 60%; animation-delay: 6s;" -->
+    <!-- img src="foto4.jpg" class="foto-solta" style="left: 80%; animation-delay: 9s;" -->
+  </div>
+
+  <!-- Música -->
   <audio id="musica" loop>
     <source src="Justin-Timberlake-Mirrors.mp3" type="audio/mp3">
   </audio>
@@ -180,7 +226,7 @@
     setInterval(atualizarContador, 1000);
     atualizarContador();
 
-    // Galeria dinâmica
+    // Galeria rotativa
     const imagens = document.querySelectorAll('.galeria img');
     let indiceAtual = 0;
 
