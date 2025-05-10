@@ -9,7 +9,9 @@
       margin: 0;
       padding: 0;
       background: url('marii.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
       font-family: 'Great Vibes', cursive;
       color: #fff;
       text-align: center;
@@ -112,7 +114,7 @@
   </audio>
 
   <button
-    onlick="document.getElementById('musica').play()"
+    onclick="document.getElementById('musica').play()"
     >Tocar Música</button>
 
   <script>
