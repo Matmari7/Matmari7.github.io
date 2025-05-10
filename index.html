@@ -200,41 +200,47 @@
   </div>
 
   <!-- Música -->
-  <audio id="musica" loop>
-    <source src="Justin-Timberlake-Mirrors.mp3" type="audio/mp3">
-  </audio>
+  <button onclick="tocarMusica()">Tocar Música</button>
 
-  <button onclick="document.getElementById('musica').play()">Tocar Música</button>
+<script>
+  function tocarMusica() {
+    const musica = document.getElementById('musica');
+    musica.play().then(() => {
+      console.log('Música reproduzida com sucesso!');
+    }).catch((e) => {
+      alert('Não foi possível tocar a música. Verifique se o navegador permite ou se o arquivo está no lugar certo.');
+      console.error(e);
+    });
+  }
 
-  <script>
-    // Contador
-    const dataInicio = new Date("2025-03-03T00:00:00");
-    const contador = document.getElementById("contador");
+  // Contador
+  const dataInicio = new Date("2025-03-03T00:00:00");
+  const contador = document.getElementById("contador");
 
-    function atualizarContador() {
-      const agora = new Date();
-      const diferenca = agora - dataInicio;
+  function atualizarContador() {
+    const agora = new Date();
+    const diferenca = agora - dataInicio;
 
-      const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
-      const segundos = Math.floor((diferenca / 1000) % 60);
+    const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
+    const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
+    const segundos = Math.floor((diferenca / 1000) % 60);
 
-      contador.innerHTML = `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗`;
-    }
+    contador.innerHTML = `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗`;
+  }
 
-    setInterval(atualizarContador, 1000);
-    atualizarContador();
+  setInterval(atualizarContador, 1000);
+  atualizarContador();
 
-    // Galeria rotativa
-    const imagens = document.querySelectorAll('.galeria img');
-    let indiceAtual = 0;
+  // Galeria rotativa
+  const imagens = document.querySelectorAll('.galeria img');
+  let indiceAtual = 0;
 
-    setInterval(() => {
-      imagens[indiceAtual].classList.remove('ativa');
-      indiceAtual = (indiceAtual + 1) % imagens.length;
-      imagens[indiceAtual].classList.add('ativa');
-    }, 5000); // Troca a imagem a cada 5 segundos
-  </script>
+  setInterval(() => {
+    imagens[indiceAtual].classList.remove('ativa');
+    indiceAtual = (indiceAtual + 1) % imagens.length;
+    imagens[indiceAtual].classList.add('ativa');
+  }, 5000);
+</script>
 </body>
 </html>
