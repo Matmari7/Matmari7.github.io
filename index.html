@@ -236,19 +236,24 @@
     Seu navegador não suporta áudio.
   </audio>
 
-  <button onclick="tocarMusica()">Tocar Música</button>
+  <!-- Botão único para alternar entre Tocar e Pausar -->
+  <button id="botaoMusica" onclick="alternarMusica()">Tocar Música</button>
 
   <script>
-    function tocarMusica() {
+    // Função para alternar entre tocar e pausar a música
+    function alternarMusica() {
       const musica = document.getElementById('musica');
-      musica.currentTime = 318;
-      musica.volume = 0.5;
-      musica.play().then(() => {
-        console.log("Tocando");
-      }).catch((erro) => {
-        console.error("Erro ao tocar áudio:", erro);
-        alert("Não foi possível tocar a música. Verifique se o arquivo está no lugar certo e se o navegador permite.");
-      });
+      const botaoMusica = document.getElementById('botaoMusica');
+
+      if (musica.paused) {
+        musica.currentTime = 318; // Começar de um ponto específico (por exemplo, 5min)
+        musica.volume = 0.5;
+        musica.play();
+        botaoMusica.textContent = "Pausar Música"; // Altera o texto do botão
+      } else {
+        musica.pause();
+        botaoMusica.textContent = "Tocar Música"; // Altera o texto do botão
+      }
     }
 
     // Contador
@@ -264,8 +269,15 @@
       const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
       const segundos = Math.floor((diferenca / 1000) % 60);
 
-      contador.innerHTML = `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗`;
+      const anoAtual = new Date().getFullYear();
+
+      // Se já tiver completado 1 ano
+      if (dias >= 365) {
+        contador.innerHTML = `🎉 1 ano juntos! 🎉<br>Ano: ${anoAtual}`;
+    } else {
+        contador.innerHTML = `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗<br>Ano: ${anoAtual}`;
     }
+  }
 
     setInterval(atualizarContador, 1000);
     atualizarContador();
