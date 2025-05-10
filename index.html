@@ -12,7 +12,7 @@
       font-family: 'Great Vibes', cursive;
       color: #fff;
       text-align: center;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -167,6 +167,18 @@
       font-family: Arial, sans-serif;
       z-index: 2;
     }
+    @media (max-width: 768px) {
+      .foto-solta, .heart {
+        animation: none !important;
+        display: none;
+  }
+
+      .galeria {
+        max-width: 90%;
+        height: auto;
+    }
+  }
+
   </style>
 </head>
 <body>
@@ -201,6 +213,7 @@
 
   <!-- Música -->
   <button onclick="tocarMusica()">Tocar Música</button>
+
 
 <script>
   function tocarMusica() {
