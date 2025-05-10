@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsividade -->
   <title>Momentos Juntos 💖</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
   <style>
@@ -167,17 +168,27 @@
       font-family: Arial, sans-serif;
       z-index: 2;
     }
+
     @media (max-width: 768px) {
       .foto-solta, .heart {
         animation: none !important;
         display: none;
-  }
+      }
 
       .galeria {
         max-width: 90%;
         height: auto;
+      }
+
+      h1 {
+        font-size: 2.5em;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
     }
-  }
 
   </style>
 </head>
@@ -186,11 +197,11 @@
   <h1>Meu BB 💞</h1>
 
   <!-- Galeria de fotos -->
-  <!-- div class="galeria">
+  <div class="galeria">
     <img src="marii.jpg" class="ativa" alt="Foto 1">
     <!-- <img src="foto2.jpg" alt="Foto 2"> -->
     <!-- <img src="foto3.jpg" alt="Foto 3"> -->
-  <!--/div -->
+  </div>
 
   <div id="contador"></div>
 
@@ -216,53 +227,53 @@
 
   <!-- Música -->
   <audio id="musica" loop>
-  <source src="Justin-Timberlake-Mirrors.mp3" type="audio/mpeg">
-  Seu navegador não suporta áudio.
-</audio>
+    <source src="Justin-Timberlake-Mirrors.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
 
-<button onclick="tocarMusica()">Tocar Música</button>
+  <button onclick="tocarMusica()">Tocar Música</button>
 
-<script>
-  function tocarMusica() {
-    const musica = document.getElementById('musica');
-    musica.currentTime = 318;
-    musica.volume = 0.5;
-    musica.play().then(() => {
-      console.log("Tocando");
-    }).catch((erro) => {
-      console.error("Erro ao tocar áudio:", erro);
-      alert("Não foi possível tocar a música. Verifique se o arquivo está no lugar certo e se o navegador permite.");
-    });
-  }
-  
-  // Contador
-  const dataInicio = new Date("2025-03-03T00:00:00");
-  const contador = document.getElementById("contador");
+  <script>
+    function tocarMusica() {
+      const musica = document.getElementById('musica');
+      musica.currentTime = 318;
+      musica.volume = 0.5;
+      musica.play().then(() => {
+        console.log("Tocando");
+      }).catch((erro) => {
+        console.error("Erro ao tocar áudio:", erro);
+        alert("Não foi possível tocar a música. Verifique se o arquivo está no lugar certo e se o navegador permite.");
+      });
+    }
 
-  function atualizarContador() {
-    const agora = new Date();
-    const diferenca = agora - dataInicio;
+    // Contador
+    const dataInicio = new Date("2025-03-03T00:00:00");
+    const contador = document.getElementById("contador");
 
-    const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-    const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
-    const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
-    const segundos = Math.floor((diferenca / 1000) % 60);
+    function atualizarContador() {
+      const agora = new Date();
+      const diferenca = agora - dataInicio;
 
-    contador.innerHTML = `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗`;
-  }
+      const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
+      const segundos = Math.floor((diferenca / 1000) % 60);
 
-  setInterval(atualizarContador, 1000);
-  atualizarContador();
+      contador.innerHTML = `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗`;
+    }
 
-  // Galeria rotativa
-  const imagens = document.querySelectorAll('.galeria img');
-  let indiceAtual = 0;
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
 
-  setInterval(() => {
-    imagens[indiceAtual].classList.remove('ativa');
-    indiceAtual = (indiceAtual + 1) % imagens.length;
-    imagens[indiceAtual].classList.add('ativa');
-  }, 5000);
-</script>
+    // Galeria rotativa
+    const imagens = document.querySelectorAll('.galeria img');
+    let indiceAtual = 0;
+
+    setInterval(() => {
+      imagens[indiceAtual].classList.remove('ativa');
+      indiceAtual = (indiceAtual + 1) % imagens.length;
+      imagens[indiceAtual].classList.add('ativa');
+    }, 5000);
+  </script>
 </body>
 </html>
