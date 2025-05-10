@@ -10,7 +10,7 @@
       margin: 0;
       padding: 0;
       background: #000;
-      font-family: 'Great Vibes', cursive;
+      font-family: 'Love Ya Like A Sister', cursive;
       color: #fff;
       text-align: center;
       min-height: 100vh;
@@ -264,20 +264,25 @@
       const agora = new Date();
       const diferenca = agora - dataInicio;
 
+      // Calcular os anos completos
+      const anos = Math.floor(diferenca / (1000 * 60 * 60 * 24 * 365)); // 1 ano = 365 dias
+      const diasRestantes = Math.floor((diferenca / (1000 * 60 * 60 * 24)) % 365); // Dias restantes após 1 ano
+
       const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
       const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
       const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
       const segundos = Math.floor((diferenca / 1000) % 60);
 
-      const anoAtual = new Date().getFullYear();
-
-      // Se já tiver completado 1 ano
-      if (dias >= 365) {
-        contador.innerHTML = `🎉 1 ano juntos! 🎉<br>Ano: ${anoAtual}`;
-    } else {
-        contador.innerHTML = `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗<br>Ano: ${anoAtual}`;
+      // Exibir o contador
+      if (anos > 0) {
+        contador.innerHTML = `${anos} ano(s) e ${diasRestantes} dias juntos 💗`;
+      } else {
+        const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
+        const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
+        const segundos = Math.floor((diferenca / 1000) % 60);
+        contador.innerHTML = `${diasRestantes} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗`;
+      }
     }
-  }
 
     setInterval(atualizarContador, 1000);
     atualizarContador();
