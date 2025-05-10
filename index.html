@@ -106,10 +106,14 @@
     <div class="heart" style="left: 90%; animation-delay: 3s;"></div>
   </div>
 
-  <audio autoplay loop>
-    <source src="Justin-Timberlake-Mirrors.mp3" type="audio/mp3">
-    Seu navegador não suporta áudio.
+  <audio id="musica" loop>
+    <source src="Justin-Timberlake-Mirrors.mp3"
+      type="audio/mp3">
   </audio>
+
+  <button
+    onlick="document.getElementById('musica').play()"
+    >Tocar Música</button>
 
   <script>
     const dataInicio = new Date("2025-03-03T00:00:00");
