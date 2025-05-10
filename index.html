@@ -1,105 +1,71 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Momentos Juntos</title>
+  <meta charset="UTF-8">
+  <title>Momentos Juntos 💖</title>
   <style>
     body {
       margin: 0;
       padding: 0;
+      background: url('marii.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(to bottom, #ffe6f0, #ffffff);
-      overflow: hidden;
+      text-align: center;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
+      backdrop-filter: brightness(0.7);
     }
 
     h1 {
-      color: #d63384;
-      font-size: 2.5em;
-      animation: fadeIn 2s ease-in-out;
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px #000;
     }
 
     #contador {
       font-size: 2em;
-      color: #6f42c1;
-      margin-top: 15px;
-      animation: fadeIn 3s ease-in-out;
+      background-color: rgba(0,0,0,0.5);
+      padding: 20px;
+      border-radius: 15px;
+      display: inline-block;
+      text-shadow: 1px 1px 4px #000;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      transform: rotate(45deg);
-      animation: float 10s infinite;
-      opacity: 0.7;
-    }
-
-    .heart::before, .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      border-radius: 50%;
-    }
-
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
-
-    @keyframes float {
-      0% {
-        bottom: -50px;
-        transform: translateX(0) rotate(45deg);
-      }
-      100% {
-        bottom: 100vh;
-        transform: translateX(50px) rotate(45deg);
-      }
+    audio {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Estamos juntos há:</h1>
+  <h1>Nosso Amor em Cada Segundo 💞</h1>
   <div id="contador"></div>
 
+  <audio autoplay loop>
+    <source src="Justin Timberlake - Mirrors (Official Video) [uuZE_IRwLNI].mp3" type="audio/mp3">
+    Seu navegador não suporta áudio.
+  </audio>
+
   <script>
-    const dataInicial = new Date('2025-03-03'); // Altere para a sua data
+    const dataInicio = new Date("2025-03-03 T00:00:00"); // Altere a data de início aqui
+    const contador = document.getElementById("contador");
+
     function atualizarContador() {
       const agora = new Date();
-      const diferenca = agora - dataInicial;
-      const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-      document.getElementById('contador').textContent = `${dias} dias`;
-    }
-    atualizarContador();
+      const diferenca = agora - dataInicio;
 
-    // Criar corações flutuantes
-    for (let i = 0; i < 30; i++) {
-      let heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = 5 + Math.random() * 5 + 's';
-      heart.style.opacity = Math.random();
-      document.body.appendChild(heart);
+      const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
+      const segundos = Math.floor((diferenca / 1000) % 60);
+
+      contador.innerHTML = `${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗`;
     }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
   </script>
 </body>
 </html>
