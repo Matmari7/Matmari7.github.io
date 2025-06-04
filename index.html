@@ -158,10 +158,10 @@
 
     button {
       margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 18px;
+      padding: 5px 10px;
+      font-size: 14px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
       background-color: #ff69b4;
       color: #fff;
@@ -186,8 +186,8 @@
       }
 
       button {
-        font-size: 16px;
-        padding: 8px 16px;
+        font-size: 12px;
+        padding: 4px 8px;
       }
 
       .hearts {
@@ -257,45 +257,103 @@
     }
 
     // Contador
-    const dataInicio = new Date("2025-03-03T00:00:00");
+    const dataInicio = new Date("2025-03-03T00:00:00"); // Sua data de início aqui!
     const contador = document.getElementById("contador");
 
     function atualizarContador() {
       const agora = new Date();
       const diferenca = agora - dataInicio;
 
-      // Calcular os anos completos
-      const anos = Math.floor(diferenca / (1000 * 60 * 60 * 24 * 365)); // 1 ano = 365 dias
-      const diasRestantes = Math.floor((diferenca / (1000 * 60 * 60 * 24)) % 365); // Dias restantes após 1 ano
+      if (diferenca < 0) {
+        const diferencaAbs = Math.abs(diferenca);
+        let diasFaltando = Math.floor(diferencaAbs / (1000 * 60 * 60 * 24));
+        let horasFaltando = Math.floor((diferencaAbs / (1000 * 60 * 60)) % 24);
+        let minutosFaltando = Math.floor((diferencaAbs / (1000 * 60)) % 60);
+        let segundosFaltando = Math.floor((diferencaAbs / 1000) % 60);
+        // contador.innerHTML = `Faltam ${diasFaltando}d ${horasFaltando}h ${minutosFaltando}m ${segundosFaltando}s para nosso dia! 💖`;
+        contador.innerHTML = `Aguardando nosso momento especial... 💖`;
+        return;
+      }
 
-      const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+      let anos = agora.getFullYear() - dataInicio.getFullYear();
+      let meses = agora.getMonth() - dataInicio.getMonth();
+      let dias = agora.getDate() - dataInicio.getDate();
+
       const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
       const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
       const segundos = Math.floor((diferenca / 1000) % 60);
 
-      // Exibir o contador
+      if (dias < 0) {
+        meses--;
+        const diasNoMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+        dias += diasNoMesAnterior;
+      }
+
+      if (meses < 0) {
+        anos--;
+        meses += 12;
+      }
+
+      let textoContadorPartes = [];
+
       if (anos > 0) {
-        contador.innerHTML = `${anos} ano(s) e ${diasRestantes} dias juntos 💗`;
+        textoContadorPartes.push(`${anos} ${anos === 1 ? "ano" : "anos"}`);
+      }
+      if (meses > 0) {
+        textoContadorPartes.push(`${meses} ${meses === 1 ? "mês" : "meses"}`);
+      }
+
+      if (anos === 0 && meses === 0) {
+        if (dias > 0) {
+          contador.innerHTML = `${dias} ${dias === 1 ? "dia" : "dias"}, ${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
+        } else {
+          contador.innerHTML = `${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
+        }
       } else {
-        const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
-        const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
-        const segundos = Math.floor((diferenca / 1000) % 60);
-        contador.innerHTML = `${diasRestantes} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos juntos 💗`;
+        if (dias > 0) {
+          textoContadorPartes.push(`${dias} ${dias === 1 ? "dia" : "dias"}`);
+        }
+
+        let textoFinal = "";
+        if (textoContadorPartes.length === 0 && dias === 0) { // Caso de 0 tudo, mas diferença positiva (raro, mas para segurança)
+          if (diferenca > 0) { // Apenas se o tempo realmente passou
+            textoFinal = `${horas}h, ${minutos}m e ${segundos}s começando`;
+          } else {
+            textoFinal = "Iniciando..."; // Ou outra mensagem apropriada
+          }
+        } else if (textoContadorPartes.length === 1) {
+          textoFinal = textoContadorPartes[0];
+        } else if (textoContadorPartes.length === 2) {
+          textoFinal = textoContadorPartes.join(" e ");
+        } else if (textoContadorPartes.length === 3) {
+          textoFinal = `${textoContadorPartes[0]}, ${textoContadorPartes[1]} e ${textoContadorPartes[2]}`;
+        }
+        
+        if (textoFinal !== "") {
+            contador.innerHTML = `${textoFinal} juntos 💗`;
+        } else if (diferenca > 0) { // Se nada foi formatado mas o tempo passou (ex: 0 dias, mas algumas horas)
+             contador.innerHTML = `${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
+        } else { // Fallback se textoFinal estiver vazio e a diferença não for positiva (ex: data futura já tratada)
+            contador.innerHTML = `Calculando...`; // Mensagem enquanto aguarda a primeira atualização se dataInicio for exatamente 'agora'
+        }
       }
     }
 
     setInterval(atualizarContador, 1000);
-    atualizarContador();
+    atualizarContador(); // Chamar para exibir imediatamente
 
-    // Galeria rotativa
-    const imagens = document.querySelectorAll('.galeria img');
+    // Galeria rotativa (se estiver usando)
+    // Verifique se existem imagens na galeria antes de tentar acessá-las
+    const imagensGaleria = document.querySelectorAll('.galeria img');
     let indiceAtual = 0;
 
-    setInterval(() => {
-      imagens[indiceAtual].classList.remove('ativa');
-      indiceAtual = (indiceAtual + 1) % imagens.length;
-      imagens[indiceAtual].classList.add('ativa');
-    }, 5000);
+    if (imagensGaleria.length > 0) {
+      setInterval(() => {
+          imagensGaleria[indiceAtual].classList.remove('ativa');
+          indiceAtual = (indiceAtual + 1) % imagensGaleria.length;
+          imagensGaleria[indiceAtual].classList.add('ativa');
+      }, 5000);
+    }
   </script>
 </body>
 </html>
