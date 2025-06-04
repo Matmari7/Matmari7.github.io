@@ -1,360 +1,511 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsividade -->
-  <title>Momentos Juntos 💖</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      font-family: 'Loved by the King', cursive;
-      color: #fff;
-      text-align: center;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">   <title>Momentos Juntos 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      font-family: 'Loved by the King', cursive; /* Se esta fonte não carregar, considere 'Great Vibes' que está no link do Google Fonts, ou uma fonte padrão */
+      color: #fff;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; /* Centraliza os itens filhos horizontalmente */
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 3.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 12px #000;
+      animation: pulse 3s infinite;
+      z-index: 2;
+    }
+
+    .galeria {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      margin: 0 auto 30px auto;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+      z-index: 1;
+    }
+
+    .galeria img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .galeria img.ativa {
+      opacity: 1;
+    }
+
+    #contador {
+      font-size: 2em;
+      background-color: transparent;
+      padding: 25px 30px;
+      border-radius: 20px;
+      text-shadow: 1px 1px 5px #000;
+      animation: fadeIn 2s ease-in-out;
+      z-index: 2;
+      font-family: Arial, sans-serif; /* Fonte mais legível para o contador */
+      line-height: 1.4;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('https://i.imgur.com/fHY5qzR.png') no-repeat center;
+      background-size: contain;
+      animation: float 10s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .fotos-dinamicas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .foto-solta {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      object-fit: cover;
+      animation: flutuarFotos 14s linear infinite;
+      opacity: 0.85;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes flutuarFotos {
+      0% {
+        transform: translateY(100vh) scale(0.8) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    audio {
+      display: none;
+    }
+
+    button { /* Estilo base para botões, incluindo o de música */
+      margin-top: 20px;
+      padding: 5px 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #ff69b4;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      z-index: 2;
+    }
+
+    /* --- INÍCIO: Estilos para a Aba de Declaração --- */
+    #botaoDeclaracao {
+      margin-top: 15px;
+      padding: 8px 15px;
+      font-size: 15px;
+      /* Herda outros estilos de 'button' ou pode ser personalizado mais */
+      background-color: #e91e63; /* Cor diferente para destaque */
+      transition: background-color 0.3s ease;
+    }
+
+    #botaoDeclaracao:hover {
+      background-color: #c2185b;
+    }
+
+    #declaracaoContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.88);
+      display: none; /* Começa oculto */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 15px;
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #declaracaoContainer.visivel {
+      display: flex; /* Mostra o container */
+      opacity: 1; /* Torna visível com transição */
+    }
+
+    #declaracaoConteudo {
+      background: linear-gradient(145deg, #2b2b2b, #1e1e1e);
+      padding: 25px 35px;
+      border-radius: 15px;
+      color: #f0f0f0;
+      max-width: 650px;
+      width: 95%;
+      max-height: 85vh;
+      overflow-y: auto;
+      text-align: left;
+      font-family: 'Georgia', serif;
+      font-size: 1.1em;
+      line-height: 1.7;
+      box-shadow: 0 5px 30px rgba(255, 105, 180, 0.35);
+      border: 1px solid rgba(255, 105, 180, 0.2);
+      transform: scale(0.95);
+      transition: transform 0.4s ease-in-out;
+    }
+
+    #declaracaoContainer.visivel #declaracaoConteudo {
+      transform: scale(1); /* Efeito de zoom ao aparecer */
     }
 
-    h1 {
-      font-size: 3.5em;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 12px #000;
-      animation: pulse 3s infinite;
-      z-index: 2;
-    }
+    #declaracaoConteudo h2 {
+      font-family: 'Great Vibes', cursive;
+      color: #ff8dc7;
+      text-align: center;
+      font-size: 2.8em;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
 
-    .galeria {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      height: 300px;
-      margin: 0 auto 30px auto;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-      z-index: 1;
-    }
+    #declaracaoConteudo p {
+      margin-bottom: 18px;
+    }
 
-    .galeria img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
+    #fecharDeclaracao {
+      display: block;
+      margin: 25px auto 0 auto;
+      padding: 10px 22px;
+      font-size: 1em;
+      /* Herda outros estilos de 'button' ou pode ser personalizado */
+      background-color: #ff69b4; /* Mesma cor do botão de música ou outra */
+      transition: background-color 0.3s ease;
+    }
 
-    .galeria img.ativa {
-      opacity: 1;
-    }
+    #fecharDeclaracao:hover {
+      background-color: #d85091;
+    }
+    /* --- FIM: Estilos para a Aba de Declaração --- */
 
-    #contador {
-      font-size: 2em;
-      background-color: transparent;
-      padding: 25px 30px;
-      border-radius: 20px;
-      text-shadow: 1px 1px 5px #000;
-      animation: fadeIn 2s ease-in-out;
-      z-index: 2;
-    }
+    @media (max-width: 768px) {
+      .foto-solta {
+        animation: flutuarFotos 14s linear infinite;
+        width: 80px;
+        height: 80px;
+      }
 
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
+      .galeria {
+        max-width: 90%;
+        height: auto;
+      }
+
+      h1 {
+        font-size: 2.5em;
+      }
+
+      button { /* Ajuste geral para botões em mobile */
+        font-size: 12px;
+        padding: 4px 8px;
+      }
+
+      /* Ajustes específicos para botões da declaração em mobile, se necessário */
+      #botaoDeclaracao {
+        font-size: 13px; /* Um pouco maior que o botão de música em mobile */
+        padding: 7px 12px;
+        margin-top: 10px;
       }
-      50% {
-        transform: scale(1.05);
-      }
-    }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+      .hearts { /* .hearts e não #hearts */
+        display: none;
+      }
 
-    .hearts {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: url('https://i.imgur.com/fHY5qzR.png') no-repeat center;
-      background-size: contain;
-      animation: float 10s linear infinite;
-      opacity: 0.7;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) scale(0.5);
-        opacity: 0;
-      }
-      100% {
-        transform: translateY(-10vh) scale(1);
-        opacity: 1;
-      }
-    }
-
-    .fotos-dinamicas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .foto-solta {
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      border-radius: 12px;
-      object-fit: cover;
-      animation: flutuarFotos 14s linear infinite;
-      opacity: 0.85;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-    }
-
-    @keyframes flutuarFotos {
-      0% {
-        transform: translateY(100vh) scale(0.8) rotate(0deg);
-        opacity: 0;
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh) scale(1) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    audio {
-      display: none;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 5px 10px;
-      font-size: 14px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #ff69b4;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      z-index: 2;
-    }
-
-    @media (max-width: 768px) {
-      .foto-solta {
-        animation: flutuarFotos 14s linear infinite; /* Mantém animação nas fotos no celular */
-        width: 80px; /* Ajusta o tamanho das fotos */
-        height: 80px;
+      #contador {
+        font-size: 1.5em;
       }
 
-      .galeria {
-        max-width: 90%;
-        height: auto;
+      /* Estilos responsivos para a declaração */
+      #declaracaoConteudo {
+        padding: 20px;
+        font-size: 1em;
+        max-height: 90vh;
       }
-
-      h1 {
-        font-size: 2.5em;
+      #declaracaoConteudo h2 {
+        font-size: 2.2em;
       }
-
-      button {
-        font-size: 12px;
-        padding: 4px 8px;
+      #fecharDeclaracao {
+        padding: 8px 18px;
+        font-size: 0.9em;
       }
+    }
 
-      .hearts {
-        display: none; /* Esconde os corações flutuantes no celular para melhor performance */
-      }
-    }
-
-  </style>
+  </style>
 </head>
 <body>
-  <h1>Eu te amo muito 💞</h1>
-  <h1>Meu BB 💞</h1>
+  <h1>Eu te amo muito 💞</h1>
+  <h1>Meu BB 💞</h1>
 
-  <!-- Galeria de fotos >
-  <div class="galeria">
-    <img src="marii.jpg" class="ativa" alt="Foto 1">
-    <!-- <img src="foto2.jpg" alt="Foto 2"> -->
-    <!-- <img src="foto3.jpg" alt="Foto 3"> -->
-  <!--/div-->
+    <div class="galeria" style="display: none;">     <img src="marii.jpg" class="ativa" alt="Foto 1">
+          </div>
 
-  <div id="contador"></div>
+  <div id="contador">Carregando...</div>
 
-  <!-- Corações flutuando -->
-  <div class="hearts">
-    <div class="heart" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="heart" style="left: 30%; animation-delay: 2s;"></div>
-    <div class="heart" style="left: 50%; animation-delay: 4s;"></div>
-    <div class="heart" style="left: 70%; animation-delay: 1s;"></div>
-    <div class="heart" style="left: 90%; animation-delay: 3s;"></div>
+    <div class="hearts">
+    <div class="heart" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="heart" style="left: 30%; animation-delay: 2s;"></div>
+    <div class="heart" style="left: 50%; animation-delay: 4s;"></div>
+    <div class="heart" style="left: 70%; animation-delay: 1s;"></div>
+    <div class="heart" style="left: 90%; animation-delay: 3s;"></div>
+  </div>
+
+    <div class="fotos-dinamicas">
+    <img src="marii.jpg" class="foto-solta" style="left: 5%; animation-delay: 0s;">
+    <img src="mariipraia.jpg" class="foto-solta" style="left: 20%; animation-delay: 3s;">
+    <img src="primeiroencontro.jpg" class="foto-solta" style="left: 10%; animation-delay: 6s;">
+    <img src="voltaitalia.jpg" class="foto-solta" style="left: 50%; animation-delay: 9s;">
+    <img src="papa.jpg" class="foto-solta" style="left: 30%; animation-delay: 6s;">
+    <img src="botanico.jpg" class="foto-solta" style="left: 70%; animation-delay: 3s;">
+    <img src="primeirabalada.jpg" class="foto-solta" style="left:90%; animation-delay: 0s;">
+  </div>
+
+    <audio id="musica" loop>
+    <source src="Justin-Timberlake-Mirrors.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+    <button id="botaoMusica" onclick="alternarMusica()">Tocar Música</button>
+  <button id="botaoDeclaracao">Ver Declaração 💌</button>
+
+  <div id="declaracaoContainer">
+    <div id="declaracaoConteudo">
+      <h2>Nossa História em Palavras...</h2>
+      <p>Meu amor,</p>
+      <p>
+        Desde que nossos caminhos se cruzaram, naquele dia especial que guardamos em nosso contador,
+        cada momento ao seu lado tem sido uma melodia que embala minha alma. Você trouxe cores
+        para o meu mundo que eu nem sabia que existiam, e um amor tão profundo que transborda
+        em cada olhar, em cada sorriso compartilhado.
+      </p>
+      <p>
+        Lembro-me como se fosse hoje... <strong>[Adicione aqui uma memória especial ou detalhe do início]</strong>.
+        E desde então, construímos um refúgio só nosso, cheio de cumplicidade, carinho e sonhos.
+        Sua presença é o meu porto seguro, sua voz a minha canção favorita.
+      </p>
+      <p>
+        Com você, aprendi o verdadeiro significado de amar e ser amado(a).
+        Esta página é apenas uma pequena demonstração de tudo que você representa para mim.
+        Que possamos continuar escrevendo nossa linda história, dia após dia, com as tintas
+        da alegria e do companheirismo.
+      </p>
+      <p>Com todo o meu amor e carinho,</p>
+      <p><strong>Seu eterno(a) BB / [Seu Nome/Apelido Carinhoso]</strong></p>
+      <button id="fecharDeclaracao">Fechar</button>
+    </div>
   </div>
 
-  <!-- Fotos flutuando dinamicamente -->
-  <div class="fotos-dinamicas">
-    <img src="marii.jpg" class="foto-solta" style="left: 5%; animation-delay: 0s;">
-    <img src="mariipraia.jpg" class="foto-solta" style="left: 20%; animation-delay: 3s;">
-    <img src="primeiroencontro.jpg" class="foto-solta" style="left: 10%; animation-delay: 6s;">
-    <img src="voltaitalia.jpg" class="foto-solta" style="left: 50%; animation-delay: 9s;">
-    <img src="papa.jpg" class="foto-solta" style="left: 30%; animation-delay: 6s;">
-    <img src="botanico.jpg" class="foto-solta" style="left: 70%; animation-delay: 3s;">
-    <img src="primeirabalada.jpg" class="foto-solta" style="left:90%; animation-delay: 0s;">
-  </div>
+  <script>
+    // Função para alternar entre tocar e pausar a música
+    function alternarMusica() {
+      const musica = document.getElementById('musica');
+      const botaoMusica = document.getElementById('botaoMusica');
 
-  <!-- Música -->
-  <audio id="musica" loop>
-    <source src="Justin-Timberlake-Mirrors.mp3" type="audio/mpeg">
-    Seu navegador não suporta áudio.
-  </audio>
+      if (musica.paused) {
+        musica.currentTime = 318; // Começar de um ponto específico (por exemplo, 5min e 18s)
+        musica.volume = 0.5;
+        musica.play().catch(error => console.error("Erro ao tentar tocar música:", error)); // Adicionado catch para erros de play
+        botaoMusica.textContent = "Pausar Música";
+      } else {
+        musica.pause();
+        botaoMusica.textContent = "Tocar Música";
+      }
+    }
 
-  <!-- Botão único para alternar entre Tocar e Pausar -->
-  <button id="botaoMusica" onclick="alternarMusica()">Tocar Música</button>
+    // Contador
+    const dataInicio = new Date("2025-03-03T00:00:00"); // Sua data de início aqui!
+    const contador = document.getElementById("contador");
 
-  <script>
-    // Função para alternar entre tocar e pausar a música
-    function alternarMusica() {
-      const musica = document.getElementById('musica');
-      const botaoMusica = document.getElementById('botaoMusica');
+    function atualizarContador() {
+      const agora = new Date();
+      const diferenca = agora - dataInicio;
 
-      if (musica.paused) {
-        musica.currentTime = 318; // Começar de um ponto específico (por exemplo, 5min)
-        musica.volume = 0.5;
-        musica.play();
-        botaoMusica.textContent = "Pausar Música"; // Altera o texto do botão
-      } else {
-        musica.pause();
-        botaoMusica.textContent = "Tocar Música"; // Altera o texto do botão
-      }
+      if (diferenca < 0) {
+        // const diferencaAbs = Math.abs(diferenca);
+        // let diasFaltando = Math.floor(diferencaAbs / (1000 * 60 * 60 * 24));
+        // let horasFaltando = Math.floor((diferencaAbs / (1000 * 60 * 60)) % 24);
+        // let minutosFaltando = Math.floor((diferencaAbs / (1000 * 60)) % 60);
+        // let segundosFaltando = Math.floor((diferencaAbs / 1000) % 60);
+        // contador.innerHTML = `Faltam ${diasFaltando}d ${horasFaltando}h ${minutosFaltando}m ${segundosFaltando}s para nosso dia! 💖`;
+        contador.innerHTML = `Aguardando nosso momento especial... 💖`;
+        return;
+      }
+
+      let anos = agora.getFullYear() - dataInicio.getFullYear();
+      let meses = agora.getMonth() - dataInicio.getMonth();
+      let dias = agora.getDate() - dataInicio.getDate();
+
+      const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
+      const segundos = Math.floor((diferenca / 1000) % 60);
+
+      if (dias < 0) {
+        meses--;
+        const diasNoMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+        dias += diasNoMesAnterior;
+      }
+
+      if (meses < 0) {
+        anos--;
+        meses += 12;
+      }
+
+      let textoContadorPartes = [];
+
+      if (anos > 0) {
+        textoContadorPartes.push(`${anos} ${anos === 1 ? "ano" : "anos"}`);
+      }
+      if (meses > 0) {
+        textoContadorPartes.push(`${meses} ${meses === 1 ? "mês" : "meses"}`);
+      }
+
+      if (anos === 0 && meses === 0) { // Menos de 1 mês
+        if (dias > 0) {
+          contador.innerHTML = `${dias} ${dias === 1 ? "dia" : "dias"}, ${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
+        } else { // Menos de 1 dia
+          contador.innerHTML = `${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
+        }
+      } else { // 1 mês ou mais
+        if (dias > 0) {
+          textoContadorPartes.push(`${dias} ${dias === 1 ? "dia" : "dias"}`);
+        }
+
+        let textoFinal = "";
+        // Lógica para juntar as partes com "e" e ","
+        if (textoContadorPartes.length === 1) {
+          textoFinal = textoContadorPartes[0];
+        } else if (textoContadorPartes.length === 2) {
+          textoFinal = textoContadorPartes.join(" e ");
+        } else if (textoContadorPartes.length === 3) {
+          textoFinal = `${textoContadorPartes[0]}, ${textoContadorPartes[1]} e ${textoContadorPartes[2]}`;
+        }
+        
+        if (textoFinal !== "") {
+            contador.innerHTML = `${textoFinal} juntos 💗`;
+        } else if (textoContadorPartes.length === 0 && dias === 0 && diferenca > 0) { // Caso especial: 0 anos, 0 meses, 0 dias, mas tempo passou
+            contador.innerHTML = `${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
+        } else if (diferenca <= 0) { // Se data futura (já tratado) ou exatamente agora sem diferença
+            contador.innerHTML = `Aguardando nosso momento especial... 💖`; // Ou "Calculando..."
+        }
+      }
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+
+    // Galeria rotativa (se estiver usando)
+    const imagensGaleria = document.querySelectorAll('.galeria img');
+    let indiceAtual = 0;
+
+    if (imagensGaleria.length > 0) {
+      setInterval(() => {
+          imagensGaleria[indiceAtual].classList.remove('ativa');
+          indiceAtual = (indiceAtual + 1) % imagensGaleria.length;
+          imagensGaleria[indiceAtual].classList.add('ativa');
+      }, 5000);
+    }
+
+    // --- INÍCIO: Lógica para a Aba de Declaração ---
+    const botaoDeclaracao = document.getElementById('botaoDeclaracao');
+    const declaracaoContainer = document.getElementById('declaracaoContainer');
+    const fecharDeclaracao = document.getElementById('fecharDeclaracao');
+
+    if (botaoDeclaracao && declaracaoContainer && fecharDeclaracao) {
+      botaoDeclaracao.addEventListener('click', () => {
+        declaracaoContainer.classList.add('visivel');
+      });
+
+      fecharDeclaracao.addEventListener('click', () => {
+        declaracaoContainer.classList.remove('visivel');
+      });
+
+      declaracaoContainer.addEventListener('click', (event) => {
+        if (event.target === declaracaoContainer) { // Se o clique foi no backdrop
+          declaracaoContainer.classList.remove('visivel');
+        }
+      });
+    } else {
+      console.error("Elementos da declaração não encontrados. Verifique os IDs.");
     }
-
-    // Contador
-    const dataInicio = new Date("2025-03-03T00:00:00"); // Sua data de início aqui!
-    const contador = document.getElementById("contador");
-
-    function atualizarContador() {
-      const agora = new Date();
-      const diferenca = agora - dataInicio;
-
-      if (diferenca < 0) {
-        const diferencaAbs = Math.abs(diferenca);
-        let diasFaltando = Math.floor(diferencaAbs / (1000 * 60 * 60 * 24));
-        let horasFaltando = Math.floor((diferencaAbs / (1000 * 60 * 60)) % 24);
-        let minutosFaltando = Math.floor((diferencaAbs / (1000 * 60)) % 60);
-        let segundosFaltando = Math.floor((diferencaAbs / 1000) % 60);
-        // contador.innerHTML = `Faltam ${diasFaltando}d ${horasFaltando}h ${minutosFaltando}m ${segundosFaltando}s para nosso dia! 💖`;
-        contador.innerHTML = `Aguardando nosso momento especial... 💖`;
-        return;
-      }
-
-      let anos = agora.getFullYear() - dataInicio.getFullYear();
-      let meses = agora.getMonth() - dataInicio.getMonth();
-      let dias = agora.getDate() - dataInicio.getDate();
-
-      const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
-      const segundos = Math.floor((diferenca / 1000) % 60);
-
-      if (dias < 0) {
-        meses--;
-        const diasNoMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
-        dias += diasNoMesAnterior;
-      }
-
-      if (meses < 0) {
-        anos--;
-        meses += 12;
-      }
-
-      let textoContadorPartes = [];
-
-      if (anos > 0) {
-        textoContadorPartes.push(`${anos} ${anos === 1 ? "ano" : "anos"}`);
-      }
-      if (meses > 0) {
-        textoContadorPartes.push(`${meses} ${meses === 1 ? "mês" : "meses"}`);
-      }
-
-      if (anos === 0 && meses === 0) {
-        if (dias > 0) {
-          contador.innerHTML = `${dias} ${dias === 1 ? "dia" : "dias"}, ${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
-        } else {
-          contador.innerHTML = `${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
-        }
-      } else {
-        if (dias > 0) {
-          textoContadorPartes.push(`${dias} ${dias === 1 ? "dia" : "dias"}`);
-        }
-
-        let textoFinal = "";
-        if (textoContadorPartes.length === 0 && dias === 0) { // Caso de 0 tudo, mas diferença positiva (raro, mas para segurança)
-          if (diferenca > 0) { // Apenas se o tempo realmente passou
-            textoFinal = `${horas}h, ${minutos}m e ${segundos}s começando`;
-          } else {
-            textoFinal = "Iniciando..."; // Ou outra mensagem apropriada
-          }
-        } else if (textoContadorPartes.length === 1) {
-          textoFinal = textoContadorPartes[0];
-        } else if (textoContadorPartes.length === 2) {
-          textoFinal = textoContadorPartes.join(" e ");
-        } else if (textoContadorPartes.length === 3) {
-          textoFinal = `${textoContadorPartes[0]}, ${textoContadorPartes[1]} e ${textoContadorPartes[2]}`;
-        }
-        
-        if (textoFinal !== "") {
-            contador.innerHTML = `${textoFinal} juntos 💗`;
-        } else if (diferenca > 0) { // Se nada foi formatado mas o tempo passou (ex: 0 dias, mas algumas horas)
-             contador.innerHTML = `${horas}h, ${minutos}m e ${segundos}s juntos 💗`;
-        } else { // Fallback se textoFinal estiver vazio e a diferença não for positiva (ex: data futura já tratada)
-            contador.innerHTML = `Calculando...`; // Mensagem enquanto aguarda a primeira atualização se dataInicio for exatamente 'agora'
-        }
-      }
-    }
-
-    setInterval(atualizarContador, 1000);
-    atualizarContador(); // Chamar para exibir imediatamente
-
-    // Galeria rotativa (se estiver usando)
-    // Verifique se existem imagens na galeria antes de tentar acessá-las
-    const imagensGaleria = document.querySelectorAll('.galeria img');
-    let indiceAtual = 0;
-
-    if (imagensGaleria.length > 0) {
-      setInterval(() => {
-          imagensGaleria[indiceAtual].classList.remove('ativa');
-          indiceAtual = (indiceAtual + 1) % imagensGaleria.length;
-          imagensGaleria[indiceAtual].classList.add('ativa');
-      }, 5000);
-    }
-  </script>
+    // --- FIM: Lógica para a Aba de Declaração ---
+  </script>
 </body>
 </html>
