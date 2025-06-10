@@ -549,7 +549,7 @@
     const fecharDeclaracao = document.getElementById('fecharDeclaracao');
 
     if (botaoDeclaracao && declaracaoContainer && fecharDeclaracao) {
-      const typingSpeed = 50; // Velocidade em ms. Quanto menor, mais rápido.
+      const typingSpeed = 15; // Velocidade em ms. Quanto menor, mais rápido.
       const paragraphsToType = Array.from(declaracaoContainer.querySelectorAll('#declaracaoConteudo p'));
       const originalContents = paragraphsToType.map(p => p.innerHTML); // Guarda o conteúdo original
 
