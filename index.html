@@ -30,6 +30,78 @@
 
     }
 
+	  /* --- Estilos para o Quebra-Cabeça --- */
+#puzzle-section {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 25px;
+  border-radius: 20px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  z-index: 5;
+  width: 100%;
+  max-width: 350px;
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+  text-align: center;
+}
+
+#puzzle-section h2 {
+  font-family: 'Great Vibes', cursive;
+  color: #ff99cc;
+  font-size: 2.8em;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+#puzzle-section p {
+  font-family: 'Georgia', serif;
+  font-size: 1em;
+  margin-top: 0;
+}
+
+#puzzle-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+  border: 3px solid #ff69b4;
+  border-radius: 8px;
+  margin: 20px auto;
+  position: relative;
+  background-color: #111;
+}
+
+.puzzle-piece {
+  width: 100%;
+  height: 100%;
+  background-size: 300px 300px; /* Mesmo tamanho do container */
+  border: 1px solid #222;
+  cursor: pointer;
+  transition: transform 0.25s ease-in-out;
+  box-sizing: border-box;
+}
+
+.puzzle-piece.empty {
+  background-image: none !important;
+  background-color: transparent;
+  cursor: default;
+}
+
+#shuffle-button {
+  background-color: #e91e63;
+  margin-top: 10px;
+}
+#shuffle-button:hover {
+  background-color: #c2185b;
+}
+
+#win-message {
+  font-family: 'Great Vibes', cursive;
+  color: #ff99cc;
+  font-size: 2.2em;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+  animation: pulse 2s infinite;
+}
+
 
     h1 {
       font-size: 3.8em; /* Ligeiramente maior */
@@ -318,6 +390,15 @@
 
 
   <div id="contador">Carregando...</div>
+	
+	<div id="puzzle-section">
+  	<h2>Um Quebra-Cabeça Especial</h2>
+  	<p>Monte nossa foto para revelar o momento!</p>
+  	<div id="puzzle-container">
+    </div>
+  	<button id="shuffle-button">Embaralhar / Começar</button>
+  	<p id="win-message" style="display: none;">Parabéns, você conseguiu! ❤️</p>
+</div>
 
   <div class="hearts">
 
@@ -593,6 +674,114 @@
     } else {
       console.error("Elementos da declaração (botão, container ou fechar) não foram encontrados.");
     }
+
+	  // --- Lógica para o Quebra-Cabeça ---
+
+document.addEventListener('DOMContentLoaded', () => {
+    const puzzleContainer = document.getElementById('puzzle-container');
+    const shuffleButton = document.getElementById('shuffle-button');
+    const winMessage = document.getElementById('win-message');
+    
+    // ####################################################################
+    // ##  IMPORTANTE: Coloque o link ou nome do arquivo da sua foto aqui ##
+    // ####################################################################
+    const puzzleImageUrl = 'primeirabalada.jpg'; // Exemplo, troque por sua foto!
+
+    const gridSize = 3;
+    let pieces = [];
+    let emptyIndex = gridSize * gridSize - 1; // O último espaço começa vazio
+
+    function createPieces() {
+        puzzleContainer.innerHTML = '';
+        pieces = [];
+        for (let i = 0; i < gridSize * gridSize; i++) {
+            const piece = document.createElement('div');
+            piece.classList.add('puzzle-piece');
+            piece.dataset.index = i;
+            
+            if (i === emptyIndex) {
+                piece.classList.add('empty');
+            } else {
+                const x = (i % gridSize) * (100 / (gridSize - 1));
+                const y = Math.floor(i / gridSize) * (100 / (gridSize - 1));
+                piece.style.backgroundImage = `url('${puzzleImageUrl}')`;
+                piece.style.backgroundPosition = `${x}% ${y}%`;
+            }
+
+            piece.addEventListener('click', () => onPieceClick(i));
+            puzzleContainer.appendChild(piece);
+            pieces.push({ originalIndex: i, currentIndex: i, element: piece });
+        }
+    }
+
+    function onPieceClick(clickedIndex) {
+        if (isAdjacent(clickedIndex, emptyIndex)) {
+            swapPieces(clickedIndex, emptyIndex);
+            checkWin();
+        }
+    }
+
+    function isAdjacent(index1, index2) {
+        const row1 = Math.floor(index1 / gridSize);
+        const col1 = index1 % gridSize;
+        const row2 = Math.floor(index2 / gridSize);
+        const col2 = index2 % gridSize;
+        return Math.abs(row1 - row2) + Math.abs(col1 - col2) === 1;
+    }
+
+    function swapPieces(index1, index2) {
+        // Troca no DOM
+        const piece1 = puzzleContainer.children[index1];
+        const piece2 = puzzleContainer.children[index2];
+        puzzleContainer.insertBefore(piece2, piece1);
+        if(puzzleContainer.children[index2+1]){
+          puzzleContainer.insertBefore(piece1, puzzleContainer.children[index2+1]);
+        } else {
+          puzzleContainer.appendChild(piece1);
+        }
+        
+        // Atualiza o índice do espaço vazio
+        emptyIndex = index1;
+    }
+
+    function shufflePuzzle() {
+        winMessage.style.display = 'none';
+        
+        let shuffles = 100; // Simula 100 movimentos aleatórios
+        for (let i = 0; i < shuffles; i++) {
+            const neighbors = [];
+            if (emptyIndex % gridSize > 0) neighbors.push(emptyIndex - 1); // Esquerda
+            if (emptyIndex % gridSize < gridSize - 1) neighbors.push(emptyIndex + 1); // Direita
+            if (emptyIndex / gridSize > 0) neighbors.push(emptyIndex - gridSize); // Cima
+            if (emptyIndex / gridSize < gridSize - 1) neighbors.push(emptyIndex + gridSize); // Baixo
+            
+            const randomIndex = Math.floor(Math.random() * neighbors.length);
+            swapPieces(neighbors[randomIndex], emptyIndex);
+        }
+    }
+
+    function checkWin() {
+        for (let i = 0; i < puzzleContainer.children.length; i++) {
+            if (parseInt(puzzleContainer.children[i].dataset.index) !== i) {
+                return; // Ainda não venceu
+            }
+        }
+        winMessage.style.display = 'block';
+        // Preenche a peça vazia para mostrar a foto completa
+        const finalPiece = document.querySelector('.puzzle-piece.empty');
+        if (finalPiece) {
+            finalPiece.classList.remove('empty');
+        }
+    }
+
+    // Inicia o jogo
+    createPieces();
+    shuffleButton.addEventListener('click', () => {
+        createPieces(); // Recria para resetar
+        shufflePuzzle();
+    });
+});
+
   </script>
 </body>
 </html> 
