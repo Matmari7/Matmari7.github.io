@@ -826,6 +826,20 @@
 
     }
 
+    // Lógica para a Aba de Declaração
+    const botaoDeclaracao = document.getElementById('botaoDeclaracao');
+    const declaracaoContainer = document.getElementById('declaracaoContainer');
+    const fecharDeclaracao = document.getElementById('fecharDeclaracao');
+    if (botaoDeclaracao && declaracaoContainer && fecharDeclaracao) {
+      botaoDeclaracao.addEventListener('click', () => declaracaoContainer.classList.add('visivel'));
+      fecharDeclaracao.addEventListener('click', () => declaracaoContainer.classList.remove('visivel'));
+      declaracaoContainer.addEventListener('click', (event) => {
+        if (event.target === declaracaoContainer) declaracaoContainer.classList.remove('visivel');
+      });
+    } else {
+      console.error("Elementos da declaração (botão, container ou fechar) não foram encontrados.");
+    }
+
   </script>
 
 </body>
