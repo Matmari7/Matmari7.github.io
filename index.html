@@ -418,53 +418,15 @@
       }
     }
 
-    // --- CÓDIGO MODIFICADO ABAIXO ---
-    // Lógica para a Aba de Declaração com botão fujão
+    // Lógica para a Aba de Declaração
     const botaoDeclaracao = document.getElementById('botaoDeclaracao');
     const declaracaoContainer = document.getElementById('declaracaoContainer');
     const fecharDeclaracao = document.getElementById('fecharDeclaracao');
-
     if (botaoDeclaracao && declaracaoContainer && fecharDeclaracao) {
-      let fugasRestantes = 5;
-
-      botaoDeclaracao.addEventListener('click', (event) => {
-        if (fugasRestantes > 0) {
-          // Previne o comportamento padrão
-          event.preventDefault();
-          fugasRestantes--;
-
-          // Na primeira fuga, ajusta o estilo do botão para permitir movimento
-          if (fugasRestantes === 4) {
-            botaoDeclaracao.style.position = 'absolute';
-            botaoDeclaracao.style.transition = 'top 0.4s ease-out, left 0.4s ease-out';
-          }
-
-          // Calcula a nova posição aleatória na tela
-          const newTop = Math.random() * (window.innerHeight - botaoDeclaracao.offsetHeight);
-          const newLeft = Math.random() * (window.innerWidth - botaoDeclaracao.offsetWidth);
-
-          // Aplica a nova posição
-          botaoDeclaracao.style.top = `${newTop}px`;
-          botaoDeclaracao.style.left = `${newLeft}px`;
-
-          // Atualiza o texto do botão para dar feedback ao usuário
-          if (fugasRestantes > 0) {
-            botaoDeclaracao.textContent = `Você não me pega! (${fugasRestantes})`;
-          } else {
-            botaoDeclaracao.textContent = 'Ok, você conseguiu! Clique.';
-          }
-        } else {
-          // Quando as fugas terminam, mostra a declaração
-          declaracaoContainer.classList.add('visivel');
-        }
-      });
-
-      // Mantém a lógica para fechar a declaração
+      botaoDeclaracao.addEventListener('click', () => declaracaoContainer.classList.add('visivel'));
       fecharDeclaracao.addEventListener('click', () => declaracaoContainer.classList.remove('visivel'));
       declaracaoContainer.addEventListener('click', (event) => {
-        if (event.target === declaracaoContainer) {
-          declaracaoContainer.classList.remove('visivel');
-        }
+        if (event.target === declaracaoContainer) declaracaoContainer.classList.remove('visivel');
       });
     } else {
       console.error("Elementos da declaração (botão, container ou fechar) não foram encontrados.");
