@@ -7,12 +7,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 20px; box-sizing: border-box; background: #000 radial-gradient(ellipse at center, #1a1a1a 0%, #000000 70%); font-family: 'Great Vibes', cursive; color: #fff; text-align: center; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        body { 
+              margin: 0; padding: 20px; 
+              box-sizing: border-box; 
+              background: #000 radial-gradient(ellipse at center, #1a1a1a 0%, #000000 70%); 
+              font-family: 'Great Vibes', cursive; color: #fff;
+              text-align: center; min-height: 100vh; display: flex; 
+              flex-direction: column; justify-content: center; align-items: 
+              center; position: relative; 
+              overflow-x: hidden; }
         
-        h1 { font-size: 3.8em; margin-bottom: 15px; text-shadow: 2px 2px 8px rgba(255, 105, 180, 0.5), 3px 3px 15px rgba(0,0,0,0.7); animation: pulse 2s infinite; z-index: 2; font-weight: normal; }
-        .galeria { display: none; /* Desativado para dar foco ao quebra-cabeça */ }
-        #contador { font-size: 2em; background-color: transparent; padding: 20px 30px; border-radius: 15px; text-shadow: 1px 1px 5px rgba(0,0,0,0.7); z-index: 2; font-family: Arial, Helvetica, sans-serif; line-height: 1.4; margin-bottom: 20px; }
-        button { margin-top: 10px; margin-bottom: 10px; padding: 8px 18px; font-size: 15px; border: none; border-radius: 10px; cursor: pointer; color: #fff; font-family: Arial, Helvetica, sans-serif; z-index: 2; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        h1 { 
+            font-size: 3.8em; 
+            margin-bottom: 15px; 
+            text-shadow: 2px 2px 8px rgba(255, 105, 180, 0.5), 3px 3px 15px rgba(0,0,0,0.7); 
+            animation: pulse 2s infinite; 
+            z-index: 2; 
+            font-weight: normal; 
+        }
+        
+        .galeria 
+        { 
+            display: none; /* Desativado para dar foco ao quebra-cabeça */ }
+        #contador
+        { 
+            font-size: 2em; 
+            background-color: transparent; 
+            padding: 20px 30px; 
+            border-radius: 15px; 
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.7); 
+            z-index: 2; 
+            font-family: Arial, Helvetica, sans-serif; 
+            line-height: 1.4; margin-bottom: 20px; 
+        }
+        
+        button 
+        { 
+            margin-top: 10px; 
+            margin-bottom: 10px; 
+            padding: 8px 18px; 
+            font-size: 15px; 
+            border: none; border-radius: 10px; 
+            cursor: pointer; 
+            color: #fff; font-family: Arial, Helvetica, sans-serif; z-index: 2; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
         button:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(0,0,0,0.3); }
         #botaoMusica { background-color: #ff69b4; }
         #botaoDeclaracao { background-color: #e91e63; }
