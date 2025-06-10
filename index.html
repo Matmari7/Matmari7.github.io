@@ -7,50 +7,51 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
     <style>
-        /* CSS CORRIGIDO: body com 'overflow: hidden' para remover QUALQUER barra de rolagem */
         body { margin: 0; padding: 20px; box-sizing: border-box; background: #000 radial-gradient(ellipse at center, #1a1a1a 0%, #000000 70%); font-family: 'Great Vibes', cursive; color: #fff; text-align: center; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
         
-        /* O resto do seu CSS (h1, galeria, contador, etc.) permanece o mesmo */
-        h1 { font-size: 3.8em; margin-bottom: 15px; text-shadow: 2px 2px 8px rgba(255, 105, 180, 0.5), 3px 3px 15px rgba(0,0,0,0.7); animation: pulse 3s infinite; z-index: 2; font-weight: normal; }
-        .galeria { position: relative; width: 100%; max-width: 600px; height: 300px; margin: 20px auto 30px auto; overflow: hidden; border-radius: 20px; box-shadow: 0 0 25px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 105, 180, 0.2); z-index: 1; }
-        .galeria img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease-in-out; }
-        .galeria img.ativa { opacity: 1; }
-        #contador { font-size: 2em; background-color: transparent; padding: 20px 30px; border-radius: 15px; text-shadow: 1px 1px 5px rgba(0,0,0,0.7); animation: fadeIn 2s ease-in-out; z-index: 2; font-family: Arial, Helvetica, sans-serif; line-height: 1.4; margin-bottom: 20px; }
-        button { margin-top: 10px; margin-bottom: 10px; padding: 8px 18px; font-size: 15px; border: none; border-radius: 10px; cursor: pointer; color: #fff; font-family: Arial, Helvetica, sans-serif; z-index: 2; transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        button:hover { transform: scale(1.03) translateY(-1px); box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(0,0,0,0.3); }
-        #botaoMusica { background-color: #ff69b4; } #botaoDeclaracao { background-color: #e91e63; }
+        h1 { font-size: 3.8em; margin-bottom: 15px; text-shadow: 2px 2px 8px rgba(255, 105, 180, 0.5), 3px 3px 15px rgba(0,0,0,0.7); animation: pulse 2s infinite; z-index: 2; font-weight: normal; }
+        .galeria { display: none; /* Desativado para dar foco ao quebra-cabeça */ }
+        #contador { font-size: 2em; background-color: transparent; padding: 20px 30px; border-radius: 15px; text-shadow: 1px 1px 5px rgba(0,0,0,0.7); z-index: 2; font-family: Arial, Helvetica, sans-serif; line-height: 1.4; margin-bottom: 20px; }
+        button { margin-top: 10px; margin-bottom: 10px; padding: 8px 18px; font-size: 15px; border: none; border-radius: 10px; cursor: pointer; color: #fff; font-family: Arial, Helvetica, sans-serif; z-index: 2; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        button:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(0,0,0,0.3); }
+        #botaoMusica { background-color: #ff69b4; }
+        #botaoDeclaracao { background-color: #e91e63; }
+        
+        /* --- ESTILO PARA ESCONDER O BOTÃO DE DECLARAÇÃO INICIALMENTE --- */
+        #botaoDeclaracao {
+            display: none; /* O botão começa escondido */
+            animation: fadeIn 1s; /* Animação suave para quando ele aparecer */
+        }
+        
         #declaracaoContainer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; box-sizing: border-box; opacity: 0; transition: opacity 0.4s ease-in-out; }
         #declaracaoContainer.visivel { display: flex; opacity: 1; }
         #declaracaoConteudo { background: linear-gradient(145deg, #303030, #222222); padding: 30px 40px; border-radius: 12px; color: #f5f5f5; max-width: 700px; width: 95%; max-height: 90vh; overflow-y: auto; text-align: left; font-family: 'Georgia', serif; font-size: 1.15em; line-height: 1.75; box-shadow: 0 8px 40px rgba(255, 105, 180, 0.3), 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255, 105, 180, 0.15); }
         #declaracaoConteudo h2 { font-family: 'Great Vibes', cursive; color: #ff99cc; text-align: center; font-size: 3em; }
 
         /* --- CSS OTIMIZADO PARA O QUEBRA-CABEÇA --- */
-        #puzzle-section { background-color: rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 20px; margin-top: 40px; margin-bottom: 20px; z-index: 5; width: 100%; max-width: 350px; box-shadow: 0 0 20px rgba(255, 105, 180, 0.3); text-align: center; }
+        #puzzle-section { background-color: rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 20px; margin-top: 20px; margin-bottom: 20px; z-index: 5; width: 100%; max-width: 350px; box-shadow: 0 0 20px rgba(255, 105, 180, 0.3); text-align: center; }
         #puzzle-section h2 { font-family: 'Great Vibes', cursive; color: #ff99cc; font-size: 2.8em; margin-top: 0; margin-bottom: 10px; }
         #puzzle-section p { font-family: 'Georgia', serif; font-size: 1em; margin-top: 0; }
         #puzzle-container { position: relative; width: 300px; height: 300px; border: 3px solid #ff69b4; border-radius: 8px; margin: 20px auto; background-color: #111; }
         .puzzle-piece { position: absolute; width: 100px; height: 100px; background-size: 300px 300px; border: 1px solid #000; box-sizing: border-box; cursor: pointer; transition: top 0.3s ease-in-out, left 0.3s ease-in-out; }
-        #shuffle-button { background-color: #e91e63; margin-top: 10px; }
+        .puzzle-piece.empty { cursor: default; background-image: none !important; }
+        #shuffle-button { background-color: #8a2be2; } /* Cor diferente para o botão de embaralhar */
         #win-message { display: none; font-family: 'Great Vibes', cursive; color: #ff99cc; font-size: 2.2em; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
     <h1>Eu te amo muito meu BB 💞</h1>
     <h1>Minha Tchutchuca 💞</h1>
-    <div class="galeria">
-        <img src="marii.jpg" class="ativa" alt="Foto 1">
-        <img src="mariipraia.jpg" alt="Foto 2">
-    </div>
     <div id="contador">Carregando...</div>
     
     <div id="puzzle-section">
-      <h2>Um Quebra-Cabeça Especial</h2>
-      <p>Monte nossa foto para revelar o momento!</p>
+      <h2>Resolva para uma surpresa...</h2>
+      <p>Monte nossa foto para liberar a declaração!</p>
       <div id="puzzle-container"></div>
-      <button id="shuffle-button">Embaralhar / Começar</button>
-      <p id="win-message">Parabéns, você conseguiu! ❤️</p>
+      <button id="shuffle-button">Embaralhar / Reiniciar</button>
+      <p id="win-message">Parabéns! Botão liberado abaixo ❤️</p>
     </div>
     
     <button id="botaoMusica" onclick="alternarMusica()">Tocar Música</button>
@@ -58,110 +59,137 @@
     <div id="declaracaoContainer"></div>
 
     <script>
-        // Scripts para música, contador, galeria, etc.
-        function alternarMusica() { /* ... */ }
-        function atualizarContador() { /* ... */ }
+        // Scripts para música, contador, etc.
+        const dataInicio = new Date("2024-03-03T00:00:00"); // Data de exemplo, ajuste se necessário
+        function atualizarContador() { /* ... Lógica do contador ... */ }
+        setInterval(atualizarContador, 1000);
+        atualizarContador();
+        function alternarMusica() { /* ... Lógica da música ... */ }
         // (O código antigo para as outras funções não precisa mudar)
 
-        // --- LÓGICA TOTALMENTE REFEITA E CORRIGIDA PARA O QUEBRA-CABEÇA ---
+        // --- LÓGICA DO QUEBRA-CABEÇA TOTALMENTE NOVA E CORRIGIDA ---
         document.addEventListener('DOMContentLoaded', () => {
             const puzzleContainer = document.getElementById('puzzle-container');
             const shuffleButton = document.getElementById('shuffle-button');
             const winMessage = document.getElementById('win-message');
-            
+            const declarationButton = document.getElementById('botaoDeclaracao');
+
             // ####################################################################
             // ##  IMPORTANTE: Coloque o link ou nome do arquivo da sua foto aqui ##
             // ####################################################################
             const puzzleImageUrl = 'primeirabalada.jpg';
 
             const gridSize = 3;
-            const emptyPieceValue = gridSize * gridSize - 1;
-            let pieceElements = [];
-            let boardState = [];
+            const pieceSize = 100;
+            let pieces = [];
 
             function initializePuzzle() {
+                declarationButton.style.display = 'none';
                 winMessage.style.display = 'none';
                 puzzleContainer.innerHTML = '';
-                pieceElements = [];
-                boardState = [];
+                pieces = [];
+                let initialPositions = [];
 
                 for (let i = 0; i < gridSize * gridSize; i++) {
-                    boardState.push(i);
+                    initialPositions.push(i);
 
                     const piece = document.createElement('div');
                     piece.classList.add('puzzle-piece');
-                    
-                    if (i === emptyPieceValue) {
-                        piece.style.display = 'none'; // A peça vazia não é visível
-                    } else {
-                        const col = i % gridSize;
-                        const row = Math.floor(i / gridSize);
-                        piece.style.backgroundImage = `url('${puzzleImageUrl}')`;
-                        piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
-                    }
-                    
-                    piece.addEventListener('click', () => onPieceClick(i));
-                    pieceElements.push(piece);
-                    puzzleContainer.appendChild(piece);
-                }
+                    piece.dataset.value = i;
 
-                shuffle();
-                render();
-            }
-
-            function render() {
-                for (let i = 0; i < boardState.length; i++) {
-                    const pieceValue = boardState[i];
-                    const pieceElement = pieceElements[pieceValue];
-                    
                     const col = i % gridSize;
                     const row = Math.floor(i / gridSize);
 
-                    pieceElement.style.left = `${col * 100}px`;
-                    pieceElement.style.top = `${row * 100}px`;
-                }
-            }
-            
-            function onPieceClick(pieceValue) {
-                const piecePosition = boardState.indexOf(pieceValue);
-                const emptyPosition = boardState.indexOf(emptyPieceValue);
+                    // A peça final (vazia) não tem imagem de fundo
+                    if (i < gridSize * gridSize - 1) {
+                        piece.style.backgroundImage = `url('${puzzleImageUrl}')`;
+                        piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
+                    } else {
+                        piece.classList.add('empty');
+                    }
 
-                const isAdjacent = Math.abs(Math.floor(piecePosition / gridSize) - Math.floor(emptyPosition / gridSize)) + Math.abs((piecePosition % gridSize) - (emptyPosition % gridSize)) === 1;
+                    piece.addEventListener('click', onPieceClick);
+                    pieces.push(piece);
+                }
+
+                // Embaralha as posições antes de renderizar
+                let shuffles = 150;
+                while (shuffles > 0) {
+                    let emptyPos = initialPositions.indexOf(gridSize * gridSize - 1);
+                    let neighbors = [];
+                    if (emptyPos % gridSize > 0) neighbors.push(emptyPos - 1);
+                    if (emptyPos % gridSize < gridSize - 1) neighbors.push(emptyPos + 1);
+                    if (Math.floor(emptyPos / gridSize) > 0) neighbors.push(emptyPos - gridSize);
+                    if (Math.floor(emptyPos / gridSize) < gridSize - 1) neighbors.push(emptyPos + gridSize);
+                    let randomNeighborPos = neighbors[Math.floor(Math.random() * neighbors.length)];
+                    [initialPositions[emptyPos], initialPositions[randomNeighborPos]] = [initialPositions[randomNeighborPos], initialPositions[emptyPos]];
+                    shuffles--;
+                }
+
+                // Renderiza as peças nas posições embaralhadas
+                initialPositions.forEach((pieceValue, position) => {
+                    const piece = pieces[pieceValue];
+                    const col = position % gridSize;
+                    const row = Math.floor(position / gridSize);
+                    piece.style.left = `${col * pieceSize}px`;
+                    piece.style.top = `${row * pieceSize}px`;
+                    puzzleContainer.appendChild(piece);
+                });
+            }
+
+            function onPieceClick(event) {
+                const clickedPiece = event.target;
+                if (clickedPiece.classList.contains('empty')) return;
+
+                const emptyPiece = document.querySelector('.puzzle-piece.empty');
+                
+                const clickedPos = { left: parseFloat(clickedPiece.style.left), top: parseFloat(clickedPiece.style.top) };
+                const emptyPos = { left: parseFloat(emptyPiece.style.left), top: parseFloat(emptyPiece.style.top) };
+                
+                const isAdjacent = Math.abs(clickedPos.left - emptyPos.left) + Math.abs(clickedPos.top - emptyPos.top) === pieceSize;
 
                 if (isAdjacent) {
-                    [boardState[piecePosition], boardState[emptyPosition]] = [boardState[emptyPosition], boardState[piecePosition]];
-                    render();
+                    [clickedPiece.style.left, emptyPiece.style.left] = [emptyPiece.style.left, clickedPiece.style.left];
+                    [clickedPiece.style.top, emptyPiece.style.top] = [emptyPiece.style.top, clickedPiece.style.top];
                     checkWin();
                 }
             }
 
-            function shuffle() {
-                let shuffles = 150;
-                for (let i = 0; i < shuffles; i++) {
-                    const emptyPosition = boardState.indexOf(emptyPieceValue);
-                    const neighbors = [];
-                    if (emptyPosition % gridSize > 0) neighbors.push(emptyPosition - 1);
-                    if (emptyPosition % gridSize < gridSize - 1) neighbors.push(emptyPosition + 1);
-                    if (Math.floor(emptyPosition / gridSize) > 0) neighbors.push(emptyPosition - gridSize);
-                    if (Math.floor(emptyPosition / gridSize) < gridSize - 1) neighbors.push(emptyPosition + gridSize);
-                    
-                    const randomNeighborPos = neighbors[Math.floor(Math.random() * neighbors.length)];
-                    
-                    [boardState[randomNeighborPos], boardState[emptyPosition]] = [boardState[emptyPosition], boardState[randomNeighborPos]];
-                }
-            }
-
             function checkWin() {
-                for (let i = 0; i < boardState.length; i++) {
-                    if (boardState[i] !== i) return;
-                }
-                winMessage.style.display = 'block';
-                pieceElements[emptyPieceValue].style.display = 'block';
-            }
+                for (const piece of pieces) {
+                    const value = parseInt(piece.dataset.value);
+                    const expectedCol = value % gridSize;
+                    const expectedRow = Math.floor(value / gridSize);
+                    const currentCol = parseFloat(piece.style.left) / pieceSize;
+                    const currentRow = parseFloat(piece.style.top) / pieceSize;
 
+                    if (currentCol !== expectedCol || currentRow !== expectedRow) {
+                        return; // Ainda não venceu
+                    }
+                }
+
+                winMessage.style.display = 'block';
+                declarationButton.style.display = 'inline-block';
+                const emptyPiece = document.querySelector('.puzzle-piece.empty');
+                if (emptyPiece) {
+                    emptyPiece.classList.remove('empty'); // Mostra a última peça
+                }
+            }
+            
             shuffleButton.addEventListener('click', initializePuzzle);
             initializePuzzle();
         });
+        
+        // Lógica da declaração (typewriter, etc., se você ainda a tiver)
+        const botaoDeclaracao = document.getElementById('botaoDeclaracao');
+        const declaracaoContainer = document.getElementById('declaracaoContainer');
+        if (botaoDeclaracao && declaracaoContainer) {
+            botaoDeclaracao.addEventListener('click', () => {
+                declaracaoContainer.classList.add('visivel');
+                // Adicione a função de typewriter aqui se quiser
+            });
+            // ... resto da lógica da declaração
+        }
     </script>
 </body>
 </html>
