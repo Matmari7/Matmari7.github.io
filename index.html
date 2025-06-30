@@ -36,8 +36,9 @@
             padding: 20px 30px; 
             border-radius: 15px; 
             text-shadow: 1px 1px 5px rgba(0,0,0,0.7); 
+            animation: pulse 2s infinite;
             z-index: 2; 
-            font-family: Arial, Helvetica, sans-serif; 
+            font-family: 'Great Vibes', cursive; color: #fff;
             line-height: 1.4; margin-bottom: 20px; 
         }
         
@@ -119,7 +120,7 @@
         // --- LÓGICA DA MÚSICA (CORRIGIDO) ---
         // 1. Crie o objeto de áudio com o caminho para sua música
         // IMPORTANTE: Troque 'nossa-musica.mp3' pelo nome do seu arquivo de música
-        const musica = new Audio('Caio Luccas-Logo Eu ft. Cabelinho.mp3');
+        const musica = new Audio('logo_eu.mp3');
         musica.loop = true; // Para a música tocar em loop
 
         function alternarMusica() {
