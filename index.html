@@ -8,14 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
     <style>
         body { 
-              margin: 0; padding: 20px; 
-              box-sizing: border-box; 
-              background: #000 radial-gradient(ellipse at center, #1a1a1a 0%, #000000 70%); 
-              font-family: 'Great Vibes', cursive; color: #fff;
-              text-align: center; min-height: 100vh; display: flex; 
-              flex-direction: column; justify-content: center; align-items: 
-              center; position: relative; 
-              overflow-x: hidden; }
+            margin: 0; padding: 20px; 
+            box-sizing: border-box; 
+            background: #000 radial-gradient(ellipse at center, #1a1a1a 0%, #000000 70%); 
+            font-family: 'Great Vibes', cursive; color: #fff;
+            text-align: center; min-height: 100vh; display: flex; 
+            flex-direction: column; justify-content: center; align-items: 
+            center; position: relative; 
+            overflow-x: hidden; }
         
         h1 { 
             font-size: 3.8em; 
@@ -98,15 +98,43 @@
     <div id="declaracaoContainer"></div>
 
     <script>
-        // Scripts para música, contador, etc.
-        const dataInicio = new Date("2024-03-03T00:00:00"); // Data de exemplo, ajuste se necessário
-        function atualizarContador() { /* ... Lógica do contador ... */ }
+        // --- LÓGICA DO CONTADOR DE TEMPO JUNTOS ---
+        const dataInicio = new Date("2024-03-03T00:00:00");
+        const contadorElemento = document.getElementById('contador');
+
+        function atualizarContador() {
+            const agora = new Date();
+            const diferenca = agora - dataInicio;
+
+            const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            contadorElemento.innerHTML = `Estamos juntos há:<br>${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+        }
         setInterval(atualizarContador, 1000);
         atualizarContador();
-        function alternarMusica() { /* ... Lógica da música ... */ }
-        // (O código antigo para as outras funções não precisa mudar)
 
-        // --- LÓGICA DO QUEBRA-CABEÇA TOTALMENTE NOVA E CORRIGIDA ---
+        // --- LÓGICA DA MÚSICA (CORRIGIDO) ---
+        // 1. Crie o objeto de áudio com o caminho para sua música
+        // IMPORTANTE: Troque 'nossa-musica.mp3' pelo nome do seu arquivo de música
+        const musica = new Audio('nossa-musica.mp3');
+        musica.loop = true; // Para a música tocar em loop
+
+        function alternarMusica() {
+            const botaoMusica = document.getElementById('botaoMusica');
+            // 2. Verifica se a música está pausada ou não tocou ainda
+            if (musica.paused) {
+                musica.play(); // Toca a música
+                botaoMusica.textContent = 'Pausar Música'; // Muda o texto do botão
+            } else {
+                musica.pause(); // Pausa a música
+                botaoMusica.textContent = 'Tocar Música'; // Volta o texto do botão
+            }
+        }
+
+        // --- LÓGICA DO QUEBRA-CABEÇA ---
         document.addEventListener('DOMContentLoaded', () => {
             const puzzleContainer = document.getElementById('puzzle-container');
             const shuffleButton = document.getElementById('shuffle-button');
@@ -131,27 +159,22 @@
 
                 for (let i = 0; i < gridSize * gridSize; i++) {
                     initialPositions.push(i);
-
                     const piece = document.createElement('div');
                     piece.classList.add('puzzle-piece');
                     piece.dataset.value = i;
-
                     const col = i % gridSize;
                     const row = Math.floor(i / gridSize);
 
-                    // A peça final (vazia) não tem imagem de fundo
                     if (i < gridSize * gridSize - 1) {
                         piece.style.backgroundImage = `url('${puzzleImageUrl}')`;
                         piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
                     } else {
                         piece.classList.add('empty');
                     }
-
                     piece.addEventListener('click', onPieceClick);
                     pieces.push(piece);
                 }
 
-                // Embaralha as posições antes de renderizar
                 let shuffles = 150;
                 while (shuffles > 0) {
                     let emptyPos = initialPositions.indexOf(gridSize * gridSize - 1);
@@ -165,7 +188,6 @@
                     shuffles--;
                 }
 
-                // Renderiza as peças nas posições embaralhadas
                 initialPositions.forEach((pieceValue, position) => {
                     const piece = pieces[pieceValue];
                     const col = position % gridSize;
@@ -179,12 +201,9 @@
             function onPieceClick(event) {
                 const clickedPiece = event.target;
                 if (clickedPiece.classList.contains('empty')) return;
-
                 const emptyPiece = document.querySelector('.puzzle-piece.empty');
-                
                 const clickedPos = { left: parseFloat(clickedPiece.style.left), top: parseFloat(clickedPiece.style.top) };
                 const emptyPos = { left: parseFloat(emptyPiece.style.left), top: parseFloat(emptyPiece.style.top) };
-                
                 const isAdjacent = Math.abs(clickedPos.left - emptyPos.left) + Math.abs(clickedPos.top - emptyPos.top) === pieceSize;
 
                 if (isAdjacent) {
@@ -201,17 +220,15 @@
                     const expectedRow = Math.floor(value / gridSize);
                     const currentCol = parseFloat(piece.style.left) / pieceSize;
                     const currentRow = parseFloat(piece.style.top) / pieceSize;
-
                     if (currentCol !== expectedCol || currentRow !== expectedRow) {
-                        return; // Ainda não venceu
+                        return;
                     }
                 }
-
                 winMessage.style.display = 'block';
                 declarationButton.style.display = 'inline-block';
                 const emptyPiece = document.querySelector('.puzzle-piece.empty');
                 if (emptyPiece) {
-                    emptyPiece.classList.remove('empty'); // Mostra a última peça
+                    emptyPiece.classList.remove('empty');
                 }
             }
             
@@ -219,15 +236,29 @@
             initializePuzzle();
         });
         
-        // Lógica da declaração (typewriter, etc., se você ainda a tiver)
+        // --- LÓGICA DA DECLARAÇÃO ---
         const botaoDeclaracao = document.getElementById('botaoDeclaracao');
         const declaracaoContainer = document.getElementById('declaracaoContainer');
+        // Adicionei um conteúdo de exemplo para a declaração
+        declaracaoContainer.innerHTML = `
+            <div id="declaracaoConteudo">
+                <h2>Meu Amor...</h2>
+                <p>Desde o momento em que te conheci, cada dia tem sido uma nova página na nossa linda história. Resolver esse quebra-cabeça é só uma pequena amostra de como, juntos, conseguimos montar as peças da nossa vida e torná-la completa.</p>
+                <p>Você trouxe cores para o meu mundo e uma melodia para o meu coração. Cada segundo ao seu lado é um presente. Obrigado por ser você, por me fazer sorrir e por construir tantos momentos inesquecíveis comigo.</p>
+                <p style="text-align: center;"><strong>Eu te amo infinitamente!</strong></p>
+            </div>
+        `;
+
         if (botaoDeclaracao && declaracaoContainer) {
             botaoDeclaracao.addEventListener('click', () => {
                 declaracaoContainer.classList.add('visivel');
-                // Adicione a função de typewriter aqui se quiser
             });
-            // ... resto da lógica da declaração
+            // Lógica para fechar a declaração ao clicar fora do conteúdo
+            declaracaoContainer.addEventListener('click', (event) => {
+                if (event.target.id === 'declaracaoContainer') {
+                    declaracaoContainer.classList.remove('visivel');
+                }
+            });
         }
     </script>
 </body>
