@@ -15,8 +15,48 @@
             text-align: center; min-height: 100vh; display: flex; 
             flex-direction: column; justify-content: center; align-items: 
             center; position: relative; 
-            overflow-x: hidden; }
+            overflow: hidden; /* Essencial para as fotos não criarem uma barra de rolagem */
+        }
         
+        /* --- ESTILOS DAS FOTOS FLUTUANTES --- */
+        .background-photos {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Fica no fundo */
+            pointer-events: none; /* Não interfere com os cliques nos botões */
+        }
+
+        .floating-photo {
+            position: absolute;
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        /* --- FIM DOS ESTILOS DAS FOTOS --- */
+
         h1 { 
             font-size: 3.8em; 
             margin-bottom: 15px; 
@@ -26,8 +66,7 @@
             font-weight: normal; 
         }
         
-        #contador
-        { 
+        #contador { 
             font-size: 2em; 
             background-color: transparent; 
             padding: 20px 30px; 
@@ -39,8 +78,7 @@
             line-height: 1.4; margin-bottom: 20px; 
         }
         
-        button 
-        { 
+        button { 
             margin-top: 10px; 
             margin-bottom: 10px; 
             padding: 8px 18px; 
@@ -65,6 +103,8 @@
     </style>
 </head>
 <body>
+    <div class="background-photos"></div>
+
     <h1>Eu te amo muito meu BB 💞</h1>
     <div id="contador">Carregando...</div>
     
@@ -74,7 +114,7 @@
 
     <script>
         // --- LÓGICA DO CONTADOR DE TEMPO JUNTOS ---
-        const dataInicio = new Date("2025-03-03T00:00:00");
+        const dataInicio = new Date("2024-03-03T00:00:00"); // VOLTEI A DATA PARA 2024 PARA O CONTADOR FUNCIONAR
         const contadorElemento = document.getElementById('contador');
 
         function atualizarContador() {
@@ -93,7 +133,7 @@
 
         // --- LÓGICA DA MÚSICA ---
         const musica = new Audio('logo_eu.mp3');
-        musica.loop = true; // Para a música tocar em loop
+        musica.loop = true;
 
         function alternarMusica() {
             const botaoMusica = document.getElementById('botaoMusica');
@@ -125,13 +165,52 @@
             botaoDeclaracao.addEventListener('click', () => {
                 declaracaoContainer.classList.add('visivel');
             });
-            // Lógica para fechar a declaração ao clicar fora do conteúdo
             declaracaoContainer.addEventListener('click', (event) => {
                 if (event.target.id === 'declaracaoContainer') {
                     declaracaoContainer.classList.remove('visivel');
                 }
             });
         }
+
+        // --- LÓGICA DAS FOTOS FLUTUANTES ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const backgroundPhotosContainer = document.querySelector('.background-photos');
+            
+            // ####################################################################
+            // ##  IMPORTANTE: Coloque os nomes dos seus arquivos de foto aqui   ##
+            // ####################################################################
+            const photoFilenames = [
+                'marii.jpg', 
+                'mariipraia.jpg', 
+                'papa.jpg',
+                'primeirabalada.jpg'
+                'voltaitalia.jpg'
+                'primeiroencontro.jpg'
+                'botanico.jpg'
+                // Adicione quantas fotos quiser!
+            ];
+
+            const numberOfPhotos = 10; // Quantidade de fotos que aparecerão flutuando ao mesmo tempo
+
+            for (let i = 0; i < numberOfPhotos; i++) {
+                const photo = document.createElement('div');
+                photo.classList.add('floating-photo');
+
+                // Escolhe uma foto aleatória da sua lista
+                const randomPhoto = photoFilenames[Math.floor(Math.random() * photoFilenames.length)];
+                photo.style.backgroundImage = `url('${randomPhoto}')`;
+
+                // Posições e durações aleatórias para um efeito mais natural
+                photo.style.left = `${Math.random() * 90}vw`; // Posição horizontal inicial
+                photo.style.width = `${Math.random() * 100 + 50}px`; // Tamanho aleatório
+                photo.style.height = photo.style.width;
+                photo.style.animationDuration = `${Math.random() * 15 + 15}s`; // Duração da animação
+                photo.style.animationDelay = `${Math.random() * 15}s`; // Atraso para começar
+
+                backgroundPhotosContainer.appendChild(photo);
+            }
+        });
+
     </script>
 </body>
 </html>
