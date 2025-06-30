@@ -26,9 +26,6 @@
             font-weight: normal; 
         }
         
-        .galeria 
-        { 
-            display: none; /* Desativado para dar foco ao quebra-cabeça */ }
         #contador
         { 
             font-size: 2em; 
@@ -58,41 +55,18 @@
         #botaoMusica { background-color: #ff69b4; }
         #botaoDeclaracao { background-color: #e91e63; }
         
-        /* --- ESTILO PARA ESCONDER O BOTÃO DE DECLARAÇÃO INICIALMENTE --- */
-        #botaoDeclaracao {
-            display: none; /* O botão começa escondido */
-            animation: fadeIn 1s; /* Animação suave para quando ele aparecer */
-        }
-        
         #declaracaoContainer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 15px; box-sizing: border-box; opacity: 0; transition: opacity 0.4s ease-in-out; }
         #declaracaoContainer.visivel { display: flex; opacity: 1; }
         #declaracaoConteudo { background: linear-gradient(145deg, #303030, #222222); padding: 30px 40px; border-radius: 12px; color: #f5f5f5; max-width: 700px; width: 95%; max-height: 90vh; overflow-y: auto; text-align: left; font-family: 'Georgia', serif; font-size: 1.15em; line-height: 1.75; box-shadow: 0 8px 40px rgba(255, 105, 180, 0.3), 0 0 10px rgba(0,0,0,0.5); border: 1px solid rgba(255, 105, 180, 0.15); }
         #declaracaoConteudo h2 { font-family: 'Great Vibes', cursive; color: #ff99cc; text-align: center; font-size: 3em; }
 
-        /* --- CSS OTIMIZADO PARA O QUEBRA-CABEÇA --- */
-        #puzzle-section { background-color: rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 20px; margin-top: 20px; margin-bottom: 20px; z-index: 5; width: 100%; max-width: 350px; box-shadow: 0 0 20px rgba(255, 105, 180, 0.3); text-align: center; }
-        #puzzle-section h2 { font-family: 'Great Vibes', cursive; color: #ff99cc; font-size: 2.8em; margin-top: 0; margin-bottom: 10px; }
-        #puzzle-section p { font-family: 'Georgia', serif; font-size: 1em; margin-top: 0; }
-        #puzzle-container { position: relative; width: 300px; height: 300px; border: 3px solid #ff69b4; border-radius: 8px; margin: 20px auto; background-color: #111; }
-        .puzzle-piece { position: absolute; width: 100px; height: 100px; background-size: 300px 300px; border: 1px solid #000; box-sizing: border-box; cursor: pointer; transition: top 0.3s ease-in-out, left 0.3s ease-in-out; }
-        .puzzle-piece.empty { cursor: default; background-image: none !important; }
-        #shuffle-button { background-color: #8a2be2; } /* Cor diferente para o botão de embaralhar */
-        #win-message { display: none; font-family: 'Great Vibes', cursive; color: #ff99cc; font-size: 2.2em; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        
     </style>
 </head>
 <body>
     <h1>Eu te amo muito meu BB 💞</h1>
     <div id="contador">Carregando...</div>
-    
-    <div id="puzzle-section">
-      <h2>Resolva para uma surpresa...</h2>
-      <p>Monte nossa foto para liberar a declaração!</p>
-      <div id="puzzle-container"></div>
-      <button id="shuffle-button">Embaralhar / Reiniciar</button>
-      <p id="win-message">Parabéns! Botão liberado abaixo ❤️</p>
-    </div>
     
     <button id="botaoMusica" onclick="alternarMusica()">Tocar Música</button>
     <button id="botaoDeclaracao">Ver Declaração 💌</button>
@@ -117,130 +91,25 @@
         setInterval(atualizarContador, 1000);
         atualizarContador();
 
-        // --- LÓGICA DA MÚSICA (CORRIGIDO) ---
-        // 1. Crie o objeto de áudio com o caminho para sua música
-        // IMPORTANTE: Troque 'nossa-musica.mp3' pelo nome do seu arquivo de música
+        // --- LÓGICA DA MÚSICA ---
         const musica = new Audio('logo_eu.mp3');
         musica.loop = true; // Para a música tocar em loop
 
         function alternarMusica() {
             const botaoMusica = document.getElementById('botaoMusica');
-            // 2. Verifica se a música está pausada ou não tocou ainda
             if (musica.paused) {
-                musica.play(); // Toca a música
-                botaoMusica.textContent = 'Pausar Música'; // Muda o texto do botão
+                musica.play();
+                botaoMusica.textContent = 'Pausar Música';
             } else {
-                musica.pause(); // Pausa a música
-                botaoMusica.textContent = 'Tocar Música'; // Volta o texto do botão
+                musica.pause();
+                botaoMusica.textContent = 'Tocar Música';
             }
         }
-
-        // --- LÓGICA DO QUEBRA-CABEÇA ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const puzzleContainer = document.getElementById('puzzle-container');
-            const shuffleButton = document.getElementById('shuffle-button');
-            const winMessage = document.getElementById('win-message');
-            const declarationButton = document.getElementById('botaoDeclaracao');
-
-            // ####################################################################
-            // ##  IMPORTANTE: Coloque o link ou nome do arquivo da sua foto aqui ##
-            // ####################################################################
-            const puzzleImageUrl = 'primeirabalada.jpg';
-
-            const gridSize = 3;
-            const pieceSize = 100;
-            let pieces = [];
-
-            function initializePuzzle() {
-                declarationButton.style.display = 'none';
-                winMessage.style.display = 'none';
-                puzzleContainer.innerHTML = '';
-                pieces = [];
-                let initialPositions = [];
-
-                for (let i = 0; i < gridSize * gridSize; i++) {
-                    initialPositions.push(i);
-                    const piece = document.createElement('div');
-                    piece.classList.add('puzzle-piece');
-                    piece.dataset.value = i;
-                    const col = i % gridSize;
-                    const row = Math.floor(i / gridSize);
-
-                    if (i < gridSize * gridSize - 1) {
-                        piece.style.backgroundImage = `url('${puzzleImageUrl}')`;
-                        piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
-                    } else {
-                        piece.classList.add('empty');
-                    }
-                    piece.addEventListener('click', onPieceClick);
-                    pieces.push(piece);
-                }
-
-                let shuffles = 150;
-                while (shuffles > 0) {
-                    let emptyPos = initialPositions.indexOf(gridSize * gridSize - 1);
-                    let neighbors = [];
-                    if (emptyPos % gridSize > 0) neighbors.push(emptyPos - 1);
-                    if (emptyPos % gridSize < gridSize - 1) neighbors.push(emptyPos + 1);
-                    if (Math.floor(emptyPos / gridSize) > 0) neighbors.push(emptyPos - gridSize);
-                    if (Math.floor(emptyPos / gridSize) < gridSize - 1) neighbors.push(emptyPos + gridSize);
-                    let randomNeighborPos = neighbors[Math.floor(Math.random() * neighbors.length)];
-                    [initialPositions[emptyPos], initialPositions[randomNeighborPos]] = [initialPositions[randomNeighborPos], initialPositions[emptyPos]];
-                    shuffles--;
-                }
-
-                initialPositions.forEach((pieceValue, position) => {
-                    const piece = pieces[pieceValue];
-                    const col = position % gridSize;
-                    const row = Math.floor(position / gridSize);
-                    piece.style.left = `${col * pieceSize}px`;
-                    piece.style.top = `${row * pieceSize}px`;
-                    puzzleContainer.appendChild(piece);
-                });
-            }
-
-            function onPieceClick(event) {
-                const clickedPiece = event.target;
-                if (clickedPiece.classList.contains('empty')) return;
-                const emptyPiece = document.querySelector('.puzzle-piece.empty');
-                const clickedPos = { left: parseFloat(clickedPiece.style.left), top: parseFloat(clickedPiece.style.top) };
-                const emptyPos = { left: parseFloat(emptyPiece.style.left), top: parseFloat(emptyPiece.style.top) };
-                const isAdjacent = Math.abs(clickedPos.left - emptyPos.left) + Math.abs(clickedPos.top - emptyPos.top) === pieceSize;
-
-                if (isAdjacent) {
-                    [clickedPiece.style.left, emptyPiece.style.left] = [emptyPiece.style.left, clickedPiece.style.left];
-                    [clickedPiece.style.top, emptyPiece.style.top] = [emptyPiece.style.top, clickedPiece.style.top];
-                    checkWin();
-                }
-            }
-
-            function checkWin() {
-                for (const piece of pieces) {
-                    const value = parseInt(piece.dataset.value);
-                    const expectedCol = value % gridSize;
-                    const expectedRow = Math.floor(value / gridSize);
-                    const currentCol = parseFloat(piece.style.left) / pieceSize;
-                    const currentRow = parseFloat(piece.style.top) / pieceSize;
-                    if (currentCol !== expectedCol || currentRow !== expectedRow) {
-                        return;
-                    }
-                }
-                winMessage.style.display = 'block';
-                declarationButton.style.display = 'inline-block';
-                const emptyPiece = document.querySelector('.puzzle-piece.empty');
-                if (emptyPiece) {
-                    emptyPiece.classList.remove('empty');
-                }
-            }
-            
-            shuffleButton.addEventListener('click', initializePuzzle);
-            initializePuzzle();
-        });
         
         // --- LÓGICA DA DECLARAÇÃO ---
         const botaoDeclaracao = document.getElementById('botaoDeclaracao');
         const declaracaoContainer = document.getElementById('declaracaoContainer');
-        // Adicionei um conteúdo de exemplo para a declaração
+        
         declaracaoContainer.innerHTML = `
             <div id="declaracaoConteudo">
                 <h2>Meu Amor...</h2>
